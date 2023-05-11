@@ -1,5 +1,6 @@
 package de.tum.in.ase.eist.controller;
 
+import de.tum.in.ase.eist.model.Note;
 import de.tum.in.ase.eist.model.Person;
 import de.tum.in.ase.eist.util.PersonSortingOptions;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +39,16 @@ public class PersonController {
     }
 
     public void updatePerson(Person person, Consumer<List<Person>> personsConsumer) {
-        // TODO Part 2: Make an http put request to the server
+        webClient.put()
+                .uri("persons/" + person.getId())
+                .bodyValue(person)
+                .retrieve()
+                .bodyToMono(Person.class)
+                .onErrorStop()
+                .subscribe(newPerson -> {
+                    persons.replaceAll(oldPerson -> oldPerson.getId().equals(newPerson.getId()) ? newPerson : oldPerson);
+                    personsConsumer.accept(persons);
+                });
     }
 
     public void deletePerson(Person person, Consumer<List<Person>> personsConsumer) {

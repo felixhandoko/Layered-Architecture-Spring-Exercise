@@ -29,10 +29,10 @@ public class PersonResource {
     }
 
     @GetMapping("persons")
-    public ResponseEntity<List<Person>> getAllPersons(@RequestParam("secret") String secret) {
+    public ResponseEntity<List<Person>> getAllPersons(@RequestParam("secret") String secret, PersonSortingOptions personSortingOptions) {
         if(!"SecretKey".equals(secret))
             return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(personService.getAllPersons(new PersonSortingOptions()));
+        return ResponseEntity.ok(personService.getAllPersons(personSortingOptions));
     }
 
     @PutMapping("persons/{personId}")
