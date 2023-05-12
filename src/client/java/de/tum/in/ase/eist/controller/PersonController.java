@@ -54,7 +54,7 @@ public class PersonController {
 
     public void deletePerson(Person person, Consumer<List<Person>> personsConsumer) {
         webClient.delete()
-                .uri("persons" + person.getId())
+                .uri("persons/" + person.getId())
                 .retrieve()
                 .toBodilessEntity()
                 .onErrorStop()
